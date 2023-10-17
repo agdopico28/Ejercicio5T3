@@ -1,14 +1,15 @@
-import java.io.*
-import com.squareup.moshi.*
+import com.squareup.moshi.Moshi
+import java.io.EOFException
+import java.io.FileInputStream
+import java.io.FileWriter
+import java.io.ObjectInputStream
 
 fun main (args: Array<String>){
     val inputFile = "Rutes.obj"
     val outputFile = "Rutes.json"
 
     val input = ObjectInputStream(FileInputStream(inputFile))
-
     val moshi = Moshi.Builder().build()
-
     val rutas = mutableListOf<Ruta>()
 
     try {
@@ -20,11 +21,13 @@ fun main (args: Array<String>){
         input.close()
     }
 
-    val json = moshi.adapter(List::class.java).toJson(rutas)
 
+    val json = moshi.adapter(List::class.java).toJson(rutas)
     val fileWriter = FileWriter(outputFile)
+
     fileWriter.use {
         it.write(json)
     }
+
 
 }
